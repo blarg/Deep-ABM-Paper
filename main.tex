@@ -1,14 +1,156 @@
-\documentclass{article}
+\documentclass[prepare]{acmconf} % Need to Replace with SigConf Style
 \usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{subcaption}
 
-\title{Deep ABM Paper}
-\author{Kevin Andrew \and Blah}
-\date{June 2018}
+\ConferenceName{The Computational Social Science Conference 2018}
+\ConferenceShortName{CSS 2018}
+\CopyrightText{\copyright 2018. Too big a block.}
+
+\title{Deep ABM Paper: Farm Land-Use Decision Making}
+\author{
+	\Author{Kevin Andrew}\\
+	\Address{University of Vermont}\\
+	\Email{kandrew6@uvm.edu}
+	\and
+	\Author{Oth}\\
+	\Address{OthAddr}\\
+	\Email{OthEmail}
+}
+\date{June 28, 2018; Version 0.1}
 
 \begin{document}
-
 \maketitle
+
+\begin{abstract}
+TODO
+\end{abstract}
 
 \section{Introduction}
 
+In this paper, we illustrate the usage of deep reinforcement learning
+methods to train agent behavior in a simulated model landscape
+focusing on the behavior of farmers under different reward policies.
+In particular, the model described in this paper 
+
+farmers make decision which have an impact on the landscape
+which
+
+advances in machine learning are allowing for new ways to
+learn within continuous decision spaces
+
+DDQN, Deep Double Q-learning, method proposed by Lillicrap et al. in 2015
+\cite{lillicrap15}.
+
+\section{The Model}
+
+The model is based off the region of St. Albans, Vermont with
+parcel data taken from [[XXX]].
+
+Each agent's state consists of 15 values.
+The actions of each agent have 5 components.
+In each time-step, the agents output
+
+Each agent can be assigned a strategy: random, greedy, or altruistic
+Used to affect the reward/loss of actions
+
+The production functions for each product were taken from [[YYY]].
+
+\subsection{Agent Learning}
+
+\begin{table}
+\caption{Learning Parameters}
+\label{tab:lparams}
+\centering
+\begin{tabular}{l c l}
+Parameter & & Value \\\hline
+Activation & & ReLU \\
+Learning Rate (actor) & $\alpha_\mu$ & 0.005 \\
+Learning Rate (critic) & $\alpha_Q$ & 0.001 \\
+Future Discount & $\gamma$ & 0.9 \\
+Transfer Rate & $\tau$ & 0.0001 \\
+\end{tabular}
+\end{table}
+
+Using the DDQN model, each agent in the network has four neural nets
+that facilitate decision-making:
+an actor network, a critic network, a target actor network, and a target
+critic network.
+Each actor network has 15 input nodes, 5 hidden layers with 15 hidden nodes
+each, and 5 output nodes.
+Each critic network has 18 input nodes, 5 hidden layers with 15 hidden nodes
+each, and 1 output node.
+Actor networks were instantiated with learning rate $\alpha_\mu = 0.005$,
+whereas critic networks were instantiated with a learning rate 
+$\alpha_Q = 0.001$.
+For each network, He initialization was used to set network weights,
+and ReLU was used for activation.
+
+At any time the maximum number of state-transitions stored in each 
+agent's memory was 10000,
+with a maximum of 16 state-transitions being used for determining
+the policy gradient of the agents. 
+At the end of each episode, target networks were updated with transfer
+rate $\tau = 0.0001$.
+
+A summary of these learning parameters is listed in 
+Table~\ref{tab:lparams}.
+
+\subsection{Experimental Design}
+
+Training:
+
+500 40-year episodes for each decision type
+
+Memory Size: 10000
+
+Action-Replay: 16
+
+N model runs under each strategy. approx 400 agents.
+
+The average agent behavior and variance was tracked and can be seen in
+the following section.
+
+\section{Results}
+\label{sec:results}
+
+The results can be seen plotted in Figure~\ref{fig:results}.
+
+\begin{figure}
+\caption{Results}
+\label{fig:results}
+\begin{subfigure}{0.48\textwidth}
+\caption{GREEDY}
+\end{subfigure}
+
+\begin{subfigure}{0.48\textwidth}
+\caption{ALTRUISTIC}
+\end{subfigure}
+
+\begin{subfigure}{0.48\textwidth}
+\caption{RANDOM}
+\end{subfigure}
+\end{figure}
+
+\section{Discussion}
+
+Base Discussion
+
+Statistical Analysis comparing targeted behavior to random
+
+\section{Future Work}
+
+Implementing Extreme Events, Government Policy Factors, and Other 
+Externalities
+
+\bibliographystyle{plain}
+\bibliography{sources}
+
+\appendix
+\section{ODD}
+\label{apx:odd}
+
+The ODD Should Go Here?
+
 \end{document}
+\bye
