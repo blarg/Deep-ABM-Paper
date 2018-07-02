@@ -1,21 +1,26 @@
-\documentclass[prepare]{acmconf} % Need to Replace with SigConf Style
+%\documentclass[prepare]{acmconf} % Need to Replace with SigConf Style
+\documentclass[12pt]{article}
 \usepackage[utf8]{inputenc}
+\usepackage[margin=2.6cm]{geometry}
 \usepackage{graphicx}
 \usepackage{subcaption}
 
-\ConferenceName{The Computational Social Science Conference 2018}
-\ConferenceShortName{CSS 2018}
-\CopyrightText{\copyright 2018. Too big a block.}
+%\ConferenceName{The Computational Social Science Conference 2018}
+%\ConferenceShortName{CSS 2018}
+%\CopyrightText{\copyright 2018. Too big a block.}
 
-\title{Deep ABM Paper: Farm Land-Use Decision Making}
-\author{
-	\Author{Kevin Andrew}\\
-	\Address{University of Vermont}\\
-	\Email{kandrew6@uvm.edu}
-	\and
-	\Author{Oth}\\
-	\Address{OthAddr}\\
-	\Email{OthEmail}
+\title{Deep Learning to Facilitate Policy-Making in Agents}
+\author{Kevin Andrew \\
+		University of Vermont\\
+		kandrew6@uvm.edu
+		\and Co
+	%\Author{Kevin Andrew}\\
+	%\Address{University of Vermont}\\
+	%\Email{kandrew6@uvm.edu}
+	%\and
+	%\Author{Oth}\\
+	%\Address{OthAddr}\\
+	%\Email{OthEmail}
 }
 \date{June 28, 2018; Version 0.1}
 
@@ -28,21 +33,46 @@ TODO
 
 \section{Introduction}
 
-In this paper, we illustrate the usage of deep reinforcement learning
-methods to train agent behavior in a simulated model landscape
-focusing on the behavior of farmers under different reward policies.
-In particular, the model described in this paper 
+The simulation of human decision-making is a key component in the
+modeling of social systems on any scale.
+Historically, this simulation has been done in agent-based systems
+by handcrafting equations for agent behavior from factors believed
+to influence agent action.
 
-farmers make decision which have an impact on the landscape
-which
+Within any model of real phenomena, simplifying assumptions must be made;
+however, each assumption adds a layer of abstraction to the model
+and a risk that some crucial factor of state not believed to contribute
+to agent decision-making but critical to the emergent behavior being
+studied is left out of the decision-making policy.
 
-advances in machine learning are allowing for new ways to
-learn within continuous decision spaces
+One approach to solving this problem is to have agents create
+their own decision policies by learning what factors of their
+states influence their perceived and actual rewards using
+reinforcement learning.
+Over the past decade, machine learning techniques have rapidly
+developed and
 
-DDQN, Deep Double Q-learning, method proposed by Lillicrap et al. in 2015
-\cite{lillicrap15}.
+In particular, Deep Double Q-learning Networks (DDQN) have shown
+great potential for solving decision-making problems in real-valued
+decision space \cite{lillicrap15}, usage.
+
+In this paper, we attempt to illustrate how deep reinforcement learning
+methods can be used to train agent behavior within the framework of
+a larger model.
+We do this by simulating a heterogeneous population of farmers on a model
+landscape.
+Farmers make the decision to expand, hold, or contract their farming
+operations each model year by some real factor and have the ability to
+implement a best management practice (BMP) to reduce the ecological impact
+of their farm at some cost.
+This model will be described in further detail in the next section along
+with details on experimental testing.
 
 \section{The Model}
+
+The model used to implement 
+
+480 parcels of land in the area of St. Albans, Vermont.
 
 The model is based off the region of St. Albans, Vermont with
 parcel data taken from [[XXX]].
@@ -65,6 +95,8 @@ The production functions for each product were taken from [[YYY]].
 \begin{tabular}{l c l}
 Parameter & & Value \\\hline
 Activation & & ReLU \\
+Maximum Memory & & 10000 transitions \\
+Action-Replay Size & & 16 transitions \\
 Learning Rate (actor) & $\alpha_\mu$ & 0.005 \\
 Learning Rate (critic) & $\alpha_Q$ & 0.001 \\
 Future Discount & $\gamma$ & 0.9 \\
@@ -73,7 +105,7 @@ Transfer Rate & $\tau$ & 0.0001 \\
 \end{table}
 
 Using the DDQN model, each agent in the network has four neural nets
-that facilitate decision-making:
+that facilitate decision-policy--making:
 an actor network, a critic network, a target actor network, and a target
 critic network.
 Each actor network has 15 input nodes, 5 hidden layers with 15 hidden nodes
@@ -110,6 +142,11 @@ N model runs under each strategy. approx 400 agents.
 
 The average agent behavior and variance was tracked and can be seen in
 the following section.
+
+These agents were tested with three different reward functions:
+a `greedy' function that rewarded maximizing profit,
+a `nongreedy' function that rewarded minimizing environmental effects,
+and a random reward function to serve as a control.
 
 \section{Results}
 \label{sec:results}
